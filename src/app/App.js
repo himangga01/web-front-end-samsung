@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled, { css } from 'styled-components/macro';
 import GlobalStyle from 'styles/GlobalStyle';
 import { Cart } from 'components';
@@ -13,14 +13,6 @@ export default function App() {
     products: null,
     totalPrice: 0,
   });
-
-  const cartValue = useMemo(
-    () => ({
-      carts
-    }),
-    [carts]
-  );
-
 
   useEffect(() => {
     async function fetchProducts() {
@@ -77,14 +69,16 @@ export default function App() {
 
   return (
     <>
-    <CartProvider value={cartValue}>
+    
         <GlobalStyle />
         <Container>
-          <Cart
-            onUpdate={handleUpdateAmount}
-          />
+          <CartProvider value={{
+            ...carts,
+            onUpdate: handleUpdateAmount
+          }}>
+            <Cart />
+          </CartProvider>
         </Container>
-      </CartProvider>
     </>
   );
 }
